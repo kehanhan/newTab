@@ -2,6 +2,48 @@ const data = JSON.parse(localStorage.getItem("data"));
 let hashMap = data || [
   { logo: "A", name: "Apple", url: "https://www.apple.com.cn/" },
   { logo: "B", name: "bilibili", url: "https://bilibili.com" },
+  { logo: "C", name: "css-tricks", url: "https://css-tricks.com/" },
+  { logo: "D", name: "DeepL翻译", url: "https://www.deepl.com/zh/translator" },
+  {
+    logo: "E",
+    name: "Element-UI",
+    url: "http://element-cn.eleme.io/#/zh-CN/component/installation",
+  },
+  {
+    logo: "F",
+    name: "Figma",
+    url: "https://www.figma.com/",
+  },
+  {
+    logo: "G",
+    name: "Github",
+    url: "https://github.com/",
+  },
+  {
+    logo: "H",
+    name: "Highcharts",
+    url: "https://www.highcharts.com.cn/",
+  },
+  {
+    logo: "I",
+    name: "Iconfont",
+    url: "https://www.iconfont.cn/",
+  },
+  {
+    logo: "J",
+    name: "jQuery",
+    url: "https://jquery.com/",
+  },
+  {
+    logo: "K",
+    name: "快递100",
+    url: "https://kuaidi100.com",
+  },
+  {
+    logo: "L",
+    name: "LeetCode",
+    url: "https://leetcode-cn.com/",
+  },
   {
     logo: "M",
     name: "MDN",
@@ -17,24 +59,32 @@ let urlToName = (url) => {
     .replace(/\.com/, "")
     .replace(/\.cn/, "");
 };
-console.log(urlToName("https://developer.mozilla.org/zh-CN/docs/Learn"));
 window.onbeforeunload = () => {
   let localList = JSON.stringify(hashMap);
   localStorage.setItem("data", localList);
 };
 const render = () => {
   $(".appList").find("li:not(.last)").remove();
-  hashMap.forEach((node) => {
+  hashMap.forEach((node, index) => {
     const $li = $(`<li class="app">
           <a href="${node.url}">
               <div class="app_icon">${node.logo}</div>
           </a>
           <div class="app_name">${node.name}</div>
+          <div class="delete_app">
+            <svg class="icon">
+                <use xlink:href="#icon-delete"></use>
+            </svg>
+          </div>
         </li>`).insertBefore($(".last"));
+    $(".app").on("click", ".delete_app", () => {
+      hashMap.splice(index, 1);
+      render();
+    });
   });
 };
 render();
-console.log("https://baidu.com".indexOf("http"));
+
 $(".add").on("click", () => {
   let url = window.prompt("请输入网站地址：");
   if (url.indexOf("http") !== 0) {
