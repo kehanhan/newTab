@@ -97,3 +97,17 @@ $(".add").on("click", () => {
   });
   render();
 });
+
+$(".search_box > input").focus(() => {
+  $(document).off("keypress");
+});
+
+$(".search_box > input").blur(() => {
+  $(document).on("keypress", (e) => {
+    for (let i = 0; i < hashMap.length; i++) {
+      if (hashMap[i].logo.toLowerCase() === e.key) {
+        window.open(hashMap[i].url);
+      }
+    }
+  });
+});
