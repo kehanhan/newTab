@@ -50,7 +50,7 @@ let hashMap = data || [
     url: "https://developer.mozilla.org/zh-CN/docs/Learn",
   },
 ];
-let urlToName = (url) => {
+const urlToName = (url) => {
   return url
     .replace("https://", "")
     .replace("www.", "")
@@ -59,7 +59,7 @@ let urlToName = (url) => {
     .replace(/\.com/, "")
     .replace(/\.cn/, "");
 };
-window.onbeforeunload = () => {
+window.onpagehide = () => {
   let localList = JSON.stringify(hashMap);
   localStorage.setItem("data", localList);
 };
@@ -70,7 +70,7 @@ const render = () => {
           <a href="${node.url}">
               <div class="app_icon">${node.logo}</div>
           </a>
-          <div class="app_name">${node.name}</div>
+          <div class="app_name" title=${node.name} >${node.name}</div>
           <div class="delete_app">
             <svg class="icon">
                 <use xlink:href="#icon-delete"></use>
@@ -87,15 +87,17 @@ render();
 
 $(".add").on("click", () => {
   let url = window.prompt("请输入网站地址：");
-  if (url.indexOf("http") !== 0) {
-    url = "https://" + url;
+  if (url) {
+    if (url.indexOf("http") !== 0) {
+      url = "https://" + url;
+    }
+    hashMap.push({
+      logo: urlToName(url)[0],
+      name: urlToName(url),
+      url: url,
+    });
+    render();
   }
-  hashMap.push({
-    logo: urlToName(url)[0],
-    name: urlToName(url),
-    url: url,
-  });
-  render();
 });
 
 $(".search_box > input").focus(() => {
