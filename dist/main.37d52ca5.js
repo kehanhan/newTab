@@ -145,14 +145,14 @@ var hashMap = data || [{ logo: "A", name: "Apple", url: "https://www.apple.com.c
 var urlToName = function urlToName(url) {
   return url.replace("https://", "").replace("www.", "").replace(/\/.*/, "").replace(/\.org/, "").replace(/\.com/, "").replace(/\.cn/, "");
 };
-window.onbeforeunload = function () {
+window.onpagehide = function () {
   var localList = JSON.stringify(hashMap);
   localStorage.setItem("data", localList);
 };
 var render = function render() {
   $(".appList").find("li:not(.last)").remove();
   hashMap.forEach(function (node, index) {
-    var $li = $("<li class=\"app\">\n          <a href=\"" + node.url + "\">\n              <div class=\"app_icon\">" + node.logo + "</div>\n          </a>\n          <div class=\"app_name\">" + node.name + "</div>\n          <div class=\"delete_app\">\n            <svg class=\"icon\">\n                <use xlink:href=\"#icon-delete\"></use>\n            </svg>\n          </div>\n        </li>").insertBefore($(".last"));
+    var $li = $("<li class=\"app\">\n          <a href=\"" + node.url + "\">\n              <div class=\"app_icon\">" + node.logo + "</div>\n          </a>\n          <div class=\"app_name\" title=" + node.name + " >" + node.name + "</div>\n          <div class=\"delete_app\">\n            <svg class=\"icon\">\n                <use xlink:href=\"#icon-delete\"></use>\n            </svg>\n          </div>\n        </li>").insertBefore($(".last"));
     $(".app").on("click", ".delete_app", function () {
       hashMap.splice(index, 1);
       render();
@@ -163,15 +163,17 @@ render();
 
 $(".add").on("click", function () {
   var url = window.prompt("请输入网站地址：");
-  if (url.indexOf("http") !== 0) {
-    url = "https://" + url;
+  if (url) {
+    if (url.indexOf("http") !== 0) {
+      url = "https://" + url;
+    }
+    hashMap.push({
+      logo: urlToName(url)[0],
+      name: urlToName(url),
+      url: url
+    });
+    render();
   }
-  hashMap.push({
-    logo: urlToName(url)[0],
-    name: urlToName(url),
-    url: url
-  });
-  render();
 });
 
 $(".search_box > input").focus(function () {
@@ -188,4 +190,4 @@ $(".search_box > input").blur(function () {
   });
 });
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.b096a047.map
+//# sourceMappingURL=main.37d52ca5.map
