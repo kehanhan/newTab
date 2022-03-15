@@ -122,7 +122,7 @@ var engines = new Map([["google", "https://google.com/search?q="], ["baidu", "ht
 var engine = localStorage.getItem("engine") || "google";
 
 var switchEngine = function switchEngine(engine) {
-  var new_src = "./images/".concat(engine, ".png");
+  var new_src = "https://kehanhan.github.io/newTab/src/images/".concat(engine, ".png");
   $(".select_button > img").attr("src", new_src);
 };
 
@@ -253,9 +253,9 @@ $(".switch_btn").click(function (e) {
   e.preventDefault();
   engine = this.name;
   localStorage.setItem("engine", engine);
-  var new_src = "./images/".concat(engine, ".png");
+  var new_src = "https://kehanhan.github.io/newTab/src/images/".concat(engine, ".png");
   $(".select_button > img").attr("src", new_src);
   $(".card").toggleClass("show");
 });
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.2509cd1b.js.map
+//# sourceMappingURL=main.80b8911d.js.map

@@ -5,7 +5,7 @@ const engines = new Map([
 ]);
 let engine = localStorage.getItem("engine") || "google";
 const switchEngine = (engine) => {
-  const new_src = `./images/${engine}.png`;
+  const new_src = `https://kehanhan.github.io/newTab/src/images/${engine}.png`;
   $(".select_button > img").attr("src", new_src);
 };
 switchEngine(engine);
@@ -149,7 +149,7 @@ $(".switch_btn").click(function (e) {
   e.preventDefault();
   engine = this.name;
   localStorage.setItem("engine", engine);
-  const new_src = `./images/${engine}.png`;
+  const new_src = `https://kehanhan.github.io/newTab/src/images/${engine}.png`;
   $(".select_button > img").attr("src", new_src);
   $(".card").toggleClass("show");
 });
