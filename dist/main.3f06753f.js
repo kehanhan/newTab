@@ -189,10 +189,11 @@ var urlToName = function urlToName(url) {
 var render = function render() {
   $(".appList").find("li:not(.last)").remove();
   siteList.forEach(function (node, index) {
-    var $li = $("<li class=\"app\">\n          <a href=\"".concat(node.url, "\">\n              <div class=\"app_icon\">").concat(node.logo, "</div>\n          </a>\n          <div class=\"app_name\" title=").concat(node.name, " >").concat(node.name, "</div>\n          <div class=\"delete_app\">\n            <svg class=\"icon\">\n                <use xlink:href=\"#icon-delete\"></use>\n            </svg>\n          </div>\n        </li>")).insertBefore($(".last")); // $(".app").on("click", ".delete_app", () => {
-    //   siteList.splice(index, 1);
-    //   render();
-    // });
+    var $li = $("<li class=\"app\">\n          <a href=\"".concat(node.url, "\">\n              <div class=\"app_icon\">").concat(node.logo, "</div>\n          </a>\n          <div class=\"app_name\" title=").concat(node.name, " >").concat(node.name, "</div>\n          <div class=\"delete_app\">\n            <svg class=\"icon\">\n                <use xlink:href=\"#icon-delete\"></use>\n            </svg>\n          </div>\n        </li>")).insertBefore($(".last"));
+    $(".app").on("click", ".delete_app", function () {
+      siteList.splice(index, 1);
+      render();
+    });
   });
 };
 
@@ -258,4 +259,4 @@ $(".switch_btn").click(function (e) {
   $(".card").toggleClass("show");
 });
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.80b8911d.js.map
+//# sourceMappingURL=main.3f06753f.js.map
