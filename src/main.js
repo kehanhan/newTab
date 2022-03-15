@@ -86,10 +86,10 @@ const render = () => {
             </svg>
           </div>
         </li>`).insertBefore($(".last"));
-    // $(".app").on("click", ".delete_app", () => {
-    //   siteList.splice(index, 1);
-    //   render();
-    // });
+    $(".app").on("click", ".delete_app", () => {
+      siteList.splice(index, 1);
+      render();
+    });
   });
 };
 render();
