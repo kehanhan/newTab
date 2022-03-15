@@ -42,7 +42,7 @@ body {
   align-items: center;
   margin-top: 80px;
   margin-bottom: 40px;
-  min-width: 200px;
+  min-width: 300px;
   min-height: 50px;
 }
 
@@ -91,8 +91,8 @@ body {
 }
 
 .card {
+  min-width: 300px;
   display: none;
-  min-width: 400px;
   padding: 0;
   position: absolute;
   top: 60px;
@@ -125,7 +125,7 @@ body {
   background-color: #fff;
   /* border: 1px solid grey;
   border-radius: 8px; */
-  margin: 15px;
+  margin: 5px;
 }
 
 .appList {
@@ -139,6 +139,12 @@ body {
 @media (min-width: 500px) {
   .search_box {
     min-width: 400px;
+  }
+  .card {
+    min-width: 400px;
+  }
+  .switch_btn {
+    margin: 15px;
   }
   main {
     max-width: 800px;
@@ -199,4 +205,4 @@ body {
 }
 
 
-/*# sourceMappingURL=style.ab643917.css.map */
+/*# sourceMappingURL=style.35e13b19.css.map */
