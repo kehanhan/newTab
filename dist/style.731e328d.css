@@ -95,6 +95,7 @@ body {
   display: none;
   padding: 0;
   position: absolute;
+  z-index: 2;
   top: 60px;
   border-radius: 10px;
   background-color: #fff;
@@ -161,7 +162,7 @@ body {
   align-items: center;
   flex-direction: column;
   margin-bottom: 20px;
-  /* position: relative; */
+  position: relative;
 }
 
 .app_icon {
@@ -203,4 +204,4 @@ body {
 }
 
 
-/*# sourceMappingURL=style.e486ffa8.css.map */
+/*# sourceMappingURL=style.731e328d.css.map */
