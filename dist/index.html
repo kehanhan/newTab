@@ -4,23 +4,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="style.ba5f384e.css">
+    <link rel="stylesheet" href="style.ab643917.css">
     <title>新标签页</title>
   </head>
   <body>
     <header>
-      <form action="https://www.google.com/search" method="get">
+      <div class="wrapper">
         <div class="search_box">
-          <button class="select_button">
-            <img draggable="false" src="google.d9c68854.png" alt="">
+          <button class="btn select_button" name="google">
+            <img class="search_logo" draggable="false">
             <i class="icon-down"></i>
           </button>
-          <input name="q" autofocus="" autocomplete="off" type="text" placeholder="Enter Search">
-          <button class="search_button" type="submit">
-            <img src="search.2719ca09.png" alt="">
+          <input autocomplete="off" type="text" placeholder="Enter Search">
+          <button class="btn search_button">
+            <img class="search_logo" src="search.5c9c4048.png" alt="">
           </button>
+
+          <div class="card">
+            <ul>
+              <li>
+                <button class="btn switch_btn" name="google">
+                  <img class="search_logo" src="google.1f5ced75.png" alt="">
+                  <span>Google</span>
+                </button>
+              </li>
+              <li>
+                <button class="btn switch_btn" name="baidu">
+                  <img class="search_logo" src="baidu.7cfc5821.png" alt="">
+                  <span>Baidu</span>
+                </button>
+              </li>
+              <li style="margin-right: auto">
+                <button class="btn switch_btn" name="mdn">
+                  <img class="search_logo" src="mdn.ff40a4a9.png" alt="">
+                  <span>MDN</span>
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
-      </form>
+      </div>
     </header>
 
     <main>
@@ -41,5 +64,5 @@
   </body>
   <script src="//at.alicdn.com/t/font_3167694_9zx4kjy0tiv.js"></script>
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="main.37d52ca5.js"></script>
+  <script src="main.2509cd1b.js"></script>
 </html>

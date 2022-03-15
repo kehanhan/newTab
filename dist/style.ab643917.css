@@ -27,17 +27,17 @@ header {
   margin: 0 40px;
 }
 
-form {
-  display: flex;
-  justify-content: center;
-}
-
 body {
   background: #eee;
 }
 
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
 .search_box {
   display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   margin-top: 80px;
@@ -46,22 +46,24 @@ body {
   min-height: 50px;
 }
 
-.search_box > button > img {
+.search_logo {
   width: 20px;
   height: 20px;
 }
 
+.btn {
+  max-width: 50px;
+  min-width: 50px;
+  height: 100%;
+  background-color: white;
+  border: none;
+  outline: none;
+}
 .select_button {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   padding-left: 5px;
-  min-width: 50px;
-  max-width: 50px;
-  height: 100%;
-  background-color: white;
-  border: none;
-  outline: none;
   border-top-left-radius: 25px;
   border-bottom-left-radius: 25px;
 }
@@ -84,14 +86,46 @@ body {
 }
 
 .search_button {
-  max-width: 50px;
-  min-width: 50px;
-  height: 100%;
-  background-color: white;
-  border: none;
-  outline: none;
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+}
+
+.card {
+  display: none;
+  min-width: 400px;
+  padding: 0;
+  position: absolute;
+  top: 60px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+.card.show {
+  display: block;
+}
+.card ul {
+  margin-bottom: 0;
+  /* border: solid orange; */
+  /* width: 100%; */
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.card li {
+  width: 20%;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+  border-right: 1px solid rgb(243, 243, 243);
+  border-bottom: 1px solid rgb(243, 243, 243);
+}
+.switch_btn {
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  /* border: 1px solid grey;
+  border-radius: 8px; */
+  margin: 15px;
 }
 
 .appList {
@@ -123,7 +157,7 @@ body {
   align-items: center;
   flex-direction: column;
   margin-bottom: 20px;
-  position: relative;
+  /* position: relative; */
 }
 
 .app_icon {
@@ -163,3 +197,6 @@ body {
   margin-left: 6px;
   margin-right: 6px;
 }
+
+
+/*# sourceMappingURL=style.ab643917.css.map */

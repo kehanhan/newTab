@@ -5,8 +5,6 @@
 //
 // anything defined in a previous bundle is accessed via the
 // orig method which is the require for previous bundles
-
-// eslint-disable-next-line no-global-assign
 parcelRequire = (function (modules, cache, entry, globalName) {
   // Save the require from previous bundle to this closure if any
   var previousRequire = typeof parcelRequire === 'function' && parcelRequire;
@@ -42,6 +40,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
       }
 
       localRequire.resolve = resolve;
+      localRequire.cache = {};
 
       var module = cache[name] = new newRequire.Module(name);
 
@@ -76,8 +75,16 @@ parcelRequire = (function (modules, cache, entry, globalName) {
     }, {}];
   };
 
+  var error;
   for (var i = 0; i < entry.length; i++) {
-    newRequire(entry[i]);
+    try {
+      newRequire(entry[i]);
+    } catch (e) {
+      // Save first error but execute all entries
+      if (!error) {
+        error = e;
+      }
+    }
   }
 
   if (entry.length) {
@@ -102,10 +109,42 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   // Override the current require with this new one
+  parcelRequire = newRequire;
+
+  if (error) {
+    // throw error from earlier, _after updating parcelRequire_
+    throw error;
+  }
+
   return newRequire;
 })({"epB2":[function(require,module,exports) {
-var data = JSON.parse(localStorage.getItem("data"));
-var hashMap = data || [{ logo: "A", name: "Apple", url: "https://www.apple.com.cn/" }, { logo: "B", name: "bilibili", url: "https://bilibili.com" }, { logo: "C", name: "css-tricks", url: "https://css-tricks.com/" }, { logo: "D", name: "DeepL翻译", url: "https://www.deepl.com/zh/translator" }, {
+var engines = new Map([["google", "https://google.com/search?q="], ["baidu", "https://www.baidu.com/s?tn=44004473_18_oem_dg&ie=utf-8&wd="], ["mdn", "https://developer.mozilla.org/zh-CN/search?q="]]);
+var engine = localStorage.getItem("engine") || "google";
+
+var switchEngine = function switchEngine(engine) {
+  var new_src = "./images/".concat(engine, ".png");
+  $(".select_button > img").attr("src", new_src);
+};
+
+switchEngine(engine);
+var sites = JSON.parse(localStorage.getItem("sites"));
+var siteList = sites || [{
+  logo: "A",
+  name: "Apple",
+  url: "https://www.apple.com.cn/"
+}, {
+  logo: "B",
+  name: "bilibili",
+  url: "https://bilibili.com"
+}, {
+  logo: "C",
+  name: "css-tricks",
+  url: "https://css-tricks.com/"
+}, {
+  logo: "D",
+  name: "DeepL翻译",
+  url: "https://www.deepl.com/zh/translator"
+}, {
   logo: "E",
   name: "Element-UI",
   url: "http://element-cn.eleme.io/#/zh-CN/component/installation"
@@ -142,52 +181,81 @@ var hashMap = data || [{ logo: "A", name: "Apple", url: "https://www.apple.com.c
   name: "MDN",
   url: "https://developer.mozilla.org/zh-CN/docs/Learn"
 }];
+
 var urlToName = function urlToName(url) {
   return url.replace("https://", "").replace("www.", "").replace(/\/.*/, "").replace(/\.org/, "").replace(/\.com/, "").replace(/\.cn/, "");
 };
-window.onpagehide = function () {
-  var localList = JSON.stringify(hashMap);
-  localStorage.setItem("data", localList);
-};
+
 var render = function render() {
   $(".appList").find("li:not(.last)").remove();
-  hashMap.forEach(function (node, index) {
-    var $li = $("<li class=\"app\">\n          <a href=\"" + node.url + "\">\n              <div class=\"app_icon\">" + node.logo + "</div>\n          </a>\n          <div class=\"app_name\" title=" + node.name + " >" + node.name + "</div>\n          <div class=\"delete_app\">\n            <svg class=\"icon\">\n                <use xlink:href=\"#icon-delete\"></use>\n            </svg>\n          </div>\n        </li>").insertBefore($(".last"));
-    $(".app").on("click", ".delete_app", function () {
-      hashMap.splice(index, 1);
-      render();
-    });
+  siteList.forEach(function (node, index) {
+    var $li = $("<li class=\"app\">\n          <a href=\"".concat(node.url, "\">\n              <div class=\"app_icon\">").concat(node.logo, "</div>\n          </a>\n          <div class=\"app_name\" title=").concat(node.name, " >").concat(node.name, "</div>\n          <div class=\"delete_app\">\n            <svg class=\"icon\">\n                <use xlink:href=\"#icon-delete\"></use>\n            </svg>\n          </div>\n        </li>")).insertBefore($(".last")); // $(".app").on("click", ".delete_app", () => {
+    //   siteList.splice(index, 1);
+    //   render();
+    // });
   });
 };
+
 render();
 
-$(".add").on("click", function () {
+var addUrl = function addUrl() {
   var url = window.prompt("请输入网站地址：");
+
   if (url) {
     if (url.indexOf("http") !== 0) {
       url = "https://" + url;
     }
-    hashMap.push({
+
+    siteList.push({
       logo: urlToName(url)[0],
       name: urlToName(url),
       url: url
     });
     render();
   }
-});
+};
 
+var keyToSite = function keyToSite(e) {
+  for (var i = 0; i < siteList.length; i++) {
+    if (siteList[i].logo.toLowerCase() === e.key) {
+      window.open(siteList[i].url);
+    }
+  }
+};
+
+var search = function search(e) {
+  e.preventDefault();
+  var inputVal = $(".search_box > input").val();
+  !inputVal || window.open(engines.get(engine) + inputVal);
+};
+
+window.onpagehide = function () {
+  var localList = JSON.stringify(siteList);
+  localStorage.setItem("sites", localList);
+};
+
+$(".add").on("click", addUrl);
 $(".search_box > input").focus(function () {
-  $(document).off("keypress");
-});
-
-$(".search_box > input").blur(function () {
+  $(document).off("keypress", keyToSite);
   $(document).on("keypress", function (e) {
-    for (var i = 0; i < hashMap.length; i++) {
-      if (hashMap[i].logo.toLowerCase() === e.key) {
-        window.open(hashMap[i].url);
-      }
+    if (e.key === "Enter") {
+      $(".search_button").trigger("click");
     }
   });
 });
+$(document).on("keypress", keyToSite);
+$(".select_button").click(function (e) {
+  e.preventDefault();
+  $(".card").toggleClass("show");
+});
+$(".search_button").click(search);
+$(".switch_btn").click(function (e) {
+  e.preventDefault();
+  engine = this.name;
+  localStorage.setItem("engine", engine);
+  var new_src = "./images/".concat(engine, ".png");
+  $(".select_button > img").attr("src", new_src);
+  $(".card").toggleClass("show");
+});
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.37d52ca5.map
+//# sourceMappingURL=main.2509cd1b.js.map
