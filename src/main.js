@@ -1,5 +1,16 @@
-const data = JSON.parse(localStorage.getItem("data"));
-let hashMap = data || [
+const engines = new Map([
+  ["google", "https://google.com/search?q="],
+  ["baidu", "https://www.baidu.com/s?tn=44004473_18_oem_dg&ie=utf-8&wd="],
+  ["mdn", "https://developer.mozilla.org/zh-CN/search?q="],
+]);
+let engine = localStorage.getItem("engine") || "google";
+const switchEngine = (engine) => {
+  const new_src = `./images/${engine}.png`;
+  $(".select_button > img").attr("src", new_src);
+};
+switchEngine(engine);
+const sites = JSON.parse(localStorage.getItem("sites"));
+let siteList = sites || [
   { logo: "A", name: "Apple", url: "https://www.apple.com.cn/" },
   { logo: "B", name: "bilibili", url: "https://bilibili.com" },
   { logo: "C", name: "css-tricks", url: "https://css-tricks.com/" },
@@ -50,6 +61,7 @@ let hashMap = data || [
     url: "https://developer.mozilla.org/zh-CN/docs/Learn",
   },
 ];
+
 const urlToName = (url) => {
   return url
     .replace("https://", "")
@@ -59,13 +71,10 @@ const urlToName = (url) => {
     .replace(/\.com/, "")
     .replace(/\.cn/, "");
 };
-window.onpagehide = () => {
-  let localList = JSON.stringify(hashMap);
-  localStorage.setItem("data", localList);
-};
+
 const render = () => {
   $(".appList").find("li:not(.last)").remove();
-  hashMap.forEach((node, index) => {
+  siteList.forEach((node, index) => {
     const $li = $(`<li class="app">
           <a href="${node.url}">
               <div class="app_icon">${node.logo}</div>
@@ -77,39 +86,70 @@ const render = () => {
             </svg>
           </div>
         </li>`).insertBefore($(".last"));
-    $(".app").on("click", ".delete_app", () => {
-      hashMap.splice(index, 1);
-      render();
-    });
+    // $(".app").on("click", ".delete_app", () => {
+    //   siteList.splice(index, 1);
+    //   render();
+    // });
   });
 };
 render();
 
-$(".add").on("click", () => {
+const addUrl = () => {
   let url = window.prompt("请输入网站地址：");
   if (url) {
     if (url.indexOf("http") !== 0) {
       url = "https://" + url;
     }
-    hashMap.push({
+    siteList.push({
       logo: urlToName(url)[0],
       name: urlToName(url),
       url: url,
     });
     render();
   }
-});
+};
+const keyToSite = (e) => {
+  for (let i = 0; i < siteList.length; i++) {
+    if (siteList[i].logo.toLowerCase() === e.key) {
+      window.open(siteList[i].url);
+    }
+  }
+};
+const search = function (e) {
+  e.preventDefault();
+  const inputVal = $(".search_box > input").val();
+  !inputVal || window.open(engines.get(engine) + inputVal);
+};
+
+window.onpagehide = () => {
+  let localList = JSON.stringify(siteList);
+  localStorage.setItem("sites", localList);
+};
+
+$(".add").on("click", addUrl);
 
 $(".search_box > input").focus(() => {
-  $(document).off("keypress");
-});
-
-$(".search_box > input").blur(() => {
+  $(document).off("keypress", keyToSite);
   $(document).on("keypress", (e) => {
-    for (let i = 0; i < hashMap.length; i++) {
-      if (hashMap[i].logo.toLowerCase() === e.key) {
-        window.open(hashMap[i].url);
-      }
+    if (e.key === "Enter") {
+      $(".search_button").trigger("click");
     }
   });
+});
+
+$(document).on("keypress", keyToSite);
+
+$(".select_button").click(function (e) {
+  e.preventDefault();
+  $(".card").toggleClass("show");
+});
+
+$(".search_button").click(search);
+$(".switch_btn").click(function (e) {
+  e.preventDefault();
+  engine = this.name;
+  localStorage.setItem("engine", engine);
+  const new_src = `./images/${engine}.png`;
+  $(".select_button > img").attr("src", new_src);
+  $(".card").toggleClass("show");
 });

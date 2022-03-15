@@ -12,24 +12,41 @@
   </head>
   <body>
     <header>
-      <form action="https://www.google.com/search" method="get">
+      <div class="wrapper">
         <div class="search_box">
-          <button class="select_button">
-            <img draggable="false" src="./images/google.png" alt="" />
+          <button class="btn select_button" name="google">
+            <img class="search_logo" draggable="false" />
             <i class="icon-down"></i>
           </button>
-          <input
-            name="q"
-            autofocus
-            autocomplete="off"
-            type="text"
-            placeholder="Enter Search"
-          />
-          <button class="search_button" type="submit">
-            <img src="./images/search.png" alt="" />
+          <input autocomplete="off" type="text" placeholder="Enter Search" />
+          <button class="btn search_button">
+            <img class="search_logo" src="./images/search.png" alt="" />
           </button>
+
+          <div class="card">
+            <ul>
+              <li>
+                <button class="btn switch_btn" name="google">
+                  <img class="search_logo" src="./images/google.png" alt="" />
+                  <span>Google</span>
+                </button>
+              </li>
+              <li>
+                <button class="btn switch_btn" name="baidu">
+                  <img class="search_logo" src="./images/baidu.png" alt="" />
+                  <span>Baidu</span>
+                </button>
+              </li>
+              <li style="margin-right: auto">
+                <button class="btn switch_btn" name="mdn">
+                  <img class="search_logo" src="./images/mdn.png" alt="" />
+                  <span>MDN</span>
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
-      </form>
+      </div>
     </header>
 
     <main>
