@@ -104,8 +104,6 @@ body {
 }
 .card ul {
   margin-bottom: 0;
-  /* border: solid orange; */
-  /* width: 100%; */
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -113,18 +111,18 @@ body {
 }
 .card li {
   width: 20%;
-  /* display: flex;
   flex-direction: column;
-  align-items: center; */
   border-right: 1px solid rgb(243, 243, 243);
   border-bottom: 1px solid rgb(243, 243, 243);
 }
 .switch_btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 50px;
   height: 50px;
   background-color: #fff;
-  /* border: 1px solid grey;
-  border-radius: 8px; */
   margin: 5px;
 }
 
@@ -205,4 +203,4 @@ body {
 }
 
 
-/*# sourceMappingURL=style.35e13b19.css.map */
+/*# sourceMappingURL=style.e486ffa8.css.map */
