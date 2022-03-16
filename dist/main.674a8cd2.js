@@ -184,8 +184,16 @@ var urlToName = function urlToName(url) {
   return url.replace("https://", "").replace("www.", "").replace(/\/.*/, "").replace(/\.org/, "").replace(/\.com/, "").replace(/\.cn/, "");
 };
 
+var removeSite = function removeSite(e) {
+  e.stopImmediatePropagation();
+  var index = $(e.currentTarget).parent().index();
+  $(e.currentTarget).parent().remove();
+  siteList.splice(index, 1);
+};
+
 var newSite = function newSite(name, logo, url) {
   $("<li class=\"site\">\n  <a href=\"".concat(url, "\">\n      <div class=\"site_icon\">").concat(logo, "</div>\n  </a>\n  <div class=\"site_name\" title=").concat(name, " >").concat(name, "</div>\n  <div class=\"remove_site\">\n    <svg class=\"icon\">\n        <use xlink:href=\"#icon-delete\"></use>\n    </svg>\n  </div>\n</li>")).insertBefore($(".last"));
+  $(".site").on("click", ".remove_site", removeSite);
 };
 
 var initSites = function initSites() {
@@ -214,14 +222,6 @@ var addSite = function addSite() {
     });
     newSite(siteName, siteLogo, url);
   }
-};
-
-var removeSite = function removeSite(e) {
-  console.log();
-  e.stopPropagation();
-  var index = $(e.currentTarget).parent().index();
-  $(e.currentTarget).parent().remove();
-  siteList.splice(index, 1);
 };
 
 var sitePointer = function sitePointer(e) {
@@ -272,6 +272,5 @@ $(".select_btn").click(toggleEngines);
 $(".search_btn").click(search);
 $(".switch_btn").click(switchEngine);
 $(".add_site").on("click", addSite);
-$(".site").on("click", ".remove_site", removeSite);
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.9df8f72e.js.map
+//# sourceMappingURL=main.674a8cd2.js.map
