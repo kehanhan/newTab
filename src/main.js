@@ -70,6 +70,12 @@ const urlToName = (url) => {
     .replace(/\.com/, "")
     .replace(/\.cn/, "");
 };
+const removeSite = (e) => {
+  e.stopImmediatePropagation();
+  const index = $(e.currentTarget).parent().index();
+  $(e.currentTarget).parent().remove();
+  siteList.splice(index, 1);
+};
 const newSite = (name, logo, url) => {
   $(`<li class="site">
   <a href="${url}">
@@ -82,6 +88,7 @@ const newSite = (name, logo, url) => {
     </svg>
   </div>
 </li>`).insertBefore($(".last"));
+  $(".site").on("click", ".remove_site", removeSite);
 };
 const initSites = () => {
   for (let i = 0; i < siteList.length; i++) {
@@ -106,13 +113,6 @@ const addSite = () => {
     });
     newSite(siteName, siteLogo, url);
   }
-};
-const removeSite = (e) => {
-  console.log();
-  e.stopPropagation();
-  const index = $(e.currentTarget).parent().index();
-  $(e.currentTarget).parent().remove();
-  siteList.splice(index, 1);
 };
 const sitePointer = (e) => {
   for (let i = 0; i < siteList.length; i++) {
@@ -155,4 +155,3 @@ $(".select_btn").click(toggleEngines);
 $(".search_btn").click(search);
 $(".switch_btn").click(switchEngine);
 $(".add_site").on("click", addSite);
-$(".site").on("click", ".remove_site", removeSite);
