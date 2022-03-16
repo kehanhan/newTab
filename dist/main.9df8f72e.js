@@ -118,16 +118,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"epB2":[function(require,module,exports) {
-var engines = new Map([["google", "https://google.com/search?q="], ["baidu", "https://www.baidu.com/s?tn=44004473_18_oem_dg&ie=utf-8&wd="], ["mdn", "https://developer.mozilla.org/zh-CN/search?q="]]);
-var engine = localStorage.getItem("engine") || "google";
-
-var switchEngine = function switchEngine(engine) {
-  var new_src = "https://kehanhan.github.io/newTab/src/images/".concat(engine, ".png");
-  $(".select_button > img").attr("src", new_src);
-};
-
-switchEngine(engine);
+var engineList = new Map([["google", "https://google.com/search?q="], ["baidu", "https://www.baidu.com/s?tn=44004473_18_oem_dg&ie=utf-8&wd="], ["mdn", "https://developer.mozilla.org/zh-CN/search?q="]]);
 var sites = JSON.parse(localStorage.getItem("sites"));
+var engine = localStorage.getItem("engine") || "google";
 var siteList = sites || [{
   logo: "A",
   name: "Apple",
@@ -182,24 +175,29 @@ var siteList = sites || [{
   url: "https://developer.mozilla.org/zh-CN/docs/Learn"
 }];
 
+var setEngine = function setEngine(engine) {
+  var new_src = "https://kehanhan.github.io/newTab/src/images/".concat(engine, ".png");
+  $(".select_btn > img").attr("src", new_src);
+};
+
 var urlToName = function urlToName(url) {
   return url.replace("https://", "").replace("www.", "").replace(/\/.*/, "").replace(/\.org/, "").replace(/\.com/, "").replace(/\.cn/, "");
 };
 
-var render = function render() {
-  $(".appList").find("li:not(.last)").remove();
-  siteList.forEach(function (node, index) {
-    var $li = $("<li class=\"app\">\n          <a href=\"".concat(node.url, "\">\n              <div class=\"app_icon\">").concat(node.logo, "</div>\n          </a>\n          <div class=\"app_name\" title=").concat(node.name, " >").concat(node.name, "</div>\n          <div class=\"delete_app\">\n            <svg class=\"icon\">\n                <use xlink:href=\"#icon-delete\"></use>\n            </svg>\n          </div>\n        </li>")).insertBefore($(".last"));
-    $(".app").on("click", ".delete_app", function () {
-      siteList.splice(index, 1);
-      render();
-    });
-  });
+var newSite = function newSite(name, logo, url) {
+  $("<li class=\"site\">\n  <a href=\"".concat(url, "\">\n      <div class=\"site_icon\">").concat(logo, "</div>\n  </a>\n  <div class=\"site_name\" title=").concat(name, " >").concat(name, "</div>\n  <div class=\"remove_site\">\n    <svg class=\"icon\">\n        <use xlink:href=\"#icon-delete\"></use>\n    </svg>\n  </div>\n</li>")).insertBefore($(".last"));
 };
 
-render();
+var initSites = function initSites() {
+  for (var i = 0; i < siteList.length; i++) {
+    newSite(siteList[i].name, siteList[i].logo, siteList[i].url);
+  }
+};
 
-var addUrl = function addUrl() {
+setEngine(engine);
+initSites();
+
+var addSite = function addSite() {
   var url = window.prompt("请输入网站地址：");
 
   if (url) {
@@ -207,16 +205,26 @@ var addUrl = function addUrl() {
       url = "https://" + url;
     }
 
+    siteName = urlToName(url);
+    siteLogo = siteName[0];
     siteList.push({
-      logo: urlToName(url)[0],
-      name: urlToName(url),
+      logo: siteLogo,
+      name: siteName,
       url: url
     });
-    render();
+    newSite(siteName, siteLogo, url);
   }
 };
 
-var keyToSite = function keyToSite(e) {
+var removeSite = function removeSite(e) {
+  console.log();
+  e.stopPropagation();
+  var index = $(e.currentTarget).parent().index();
+  $(e.currentTarget).parent().remove();
+  siteList.splice(index, 1);
+};
+
+var sitePointer = function sitePointer(e) {
   for (var i = 0; i < siteList.length; i++) {
     if (siteList[i].logo.toLowerCase() === e.key) {
       window.open(siteList[i].url);
@@ -227,7 +235,24 @@ var keyToSite = function keyToSite(e) {
 var search = function search(e) {
   e.preventDefault();
   var inputVal = $(".search_box > input").val();
-  !inputVal || window.open(engines.get(engine) + inputVal);
+  !inputVal || window.open(engineList.get(engine) + inputVal);
+};
+
+var toggleEngines = function toggleEngines() {
+  $(".card").toggleClass("show");
+};
+
+var switchEngine = function switchEngine(e) {
+  e.preventDefault();
+  engine = this.name;
+  localStorage.setItem("engine", engine);
+  var new_src = "https://kehanhan.github.io/newTab/src/images/".concat(engine, ".png");
+  $(".select_btn > img").attr("src", new_src);
+  toggleEngines();
+};
+
+var enterSearch = function enterSearch(e) {
+  e.key === "Enter" && $(".search_btn").trigger("click");
 };
 
 window.onpagehide = function () {
@@ -235,28 +260,18 @@ window.onpagehide = function () {
   localStorage.setItem("sites", localList);
 };
 
-$(".add").on("click", addUrl);
+$(document).on("keypress", sitePointer);
 $(".search_box > input").focus(function () {
-  $(document).off("keypress", keyToSite);
-  $(document).on("keypress", function (e) {
-    if (e.key === "Enter") {
-      $(".search_button").trigger("click");
-    }
-  });
+  $(document).off("keypress", sitePointer);
+  $(document).on("keypress", enterSearch);
 });
-$(document).on("keypress", keyToSite);
-$(".select_button").click(function (e) {
-  e.preventDefault();
-  $(".card").toggleClass("show");
+$(".search_box > input").blur(function () {
+  return $(document).on("keypress", sitePointer);
 });
-$(".search_button").click(search);
-$(".switch_btn").click(function (e) {
-  e.preventDefault();
-  engine = this.name;
-  localStorage.setItem("engine", engine);
-  var new_src = "https://kehanhan.github.io/newTab/src/images/".concat(engine, ".png");
-  $(".select_button > img").attr("src", new_src);
-  $(".card").toggleClass("show");
-});
+$(".select_btn").click(toggleEngines);
+$(".search_btn").click(search);
+$(".switch_btn").click(switchEngine);
+$(".add_site").on("click", addSite);
+$(".site").on("click", ".remove_site", removeSite);
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.3f06753f.js.map
+//# sourceMappingURL=main.9df8f72e.js.map

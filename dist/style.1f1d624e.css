@@ -15,6 +15,23 @@ a {
   text-decoration: none;
 }
 
+@media (min-width: 500px) {
+  .search_box {
+    min-width: 400px;
+  }
+  .card {
+    min-width: 400px;
+  }
+  .switch_btn {
+    margin: 15px;
+  }
+  main {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .icon {
   width: 1em;
   height: 1em;
@@ -59,7 +76,7 @@ body {
   border: none;
   outline: none;
 }
-.select_button {
+.select_btn {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -85,7 +102,7 @@ body {
   outline: none;
 }
 
-.search_button {
+.search_btn {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
 }
@@ -127,7 +144,7 @@ body {
   margin: 5px;
 }
 
-.appList {
+.siteList {
   margin-left: 34px;
   margin-right: 34px;
   display: flex;
@@ -135,24 +152,7 @@ body {
   justify-content: space-between;
 }
 
-@media (min-width: 500px) {
-  .search_box {
-    min-width: 400px;
-  }
-  .card {
-    min-width: 400px;
-  }
-  .switch_btn {
-    margin: 15px;
-  }
-  main {
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-.app {
+.site {
   margin-left: 6px;
   margin-right: 6px;
   width: 60px;
@@ -165,7 +165,7 @@ body {
   position: relative;
 }
 
-.app_icon {
+.site_icon {
   border: 1px solid #ddd;
   border-radius: 15px;
   background: white;
@@ -178,7 +178,7 @@ body {
   text-transform: uppercase;
 }
 
-.app_name {
+.site_name {
   font-size: 10px;
   max-width: 100%;
   overflow: hidden;
@@ -186,22 +186,16 @@ body {
   white-space: nowrap;
 }
 
-.app:hover > .delete_app {
+.site:hover > .remove_site {
   display: block;
 }
 
-.delete_app {
+.remove_site {
   display: none;
   position: absolute;
   top: -5px;
   right: -5px;
 }
 
-.appList > i {
-  width: 60px;
-  margin-left: 6px;
-  margin-right: 6px;
-}
 
-
-/*# sourceMappingURL=style.731e328d.css.map */
+/*# sourceMappingURL=style.1f1d624e.css.map */
