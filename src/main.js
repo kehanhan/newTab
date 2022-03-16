@@ -1,15 +1,10 @@
-const engines = new Map([
+const engineList = new Map([
   ["google", "https://google.com/search?q="],
   ["baidu", "https://www.baidu.com/s?tn=44004473_18_oem_dg&ie=utf-8&wd="],
   ["mdn", "https://developer.mozilla.org/zh-CN/search?q="],
 ]);
-let engine = localStorage.getItem("engine") || "google";
-const switchEngine = (engine) => {
-  const new_src = `https://kehanhan.github.io/newTab/src/images/${engine}.png`;
-  $(".select_button > img").attr("src", new_src);
-};
-switchEngine(engine);
 const sites = JSON.parse(localStorage.getItem("sites"));
+let engine = localStorage.getItem("engine") || "google";
 let siteList = sites || [
   { logo: "A", name: "Apple", url: "https://www.apple.com.cn/" },
   { logo: "B", name: "bilibili", url: "https://bilibili.com" },
@@ -62,6 +57,10 @@ let siteList = sites || [
   },
 ];
 
+const setEngine = (engine) => {
+  const new_src = `https://kehanhan.github.io/newTab/src/images/${engine}.png`;
+  $(".select_btn > img").attr("src", new_src);
+};
 const urlToName = (url) => {
   return url
     .replace("https://", "")
@@ -71,85 +70,89 @@ const urlToName = (url) => {
     .replace(/\.com/, "")
     .replace(/\.cn/, "");
 };
-
-const render = () => {
-  $(".appList").find("li:not(.last)").remove();
-  siteList.forEach((node, index) => {
-    const $li = $(`<li class="app">
-          <a href="${node.url}">
-              <div class="app_icon">${node.logo}</div>
-          </a>
-          <div class="app_name" title=${node.name} >${node.name}</div>
-          <div class="delete_app">
-            <svg class="icon">
-                <use xlink:href="#icon-delete"></use>
-            </svg>
-          </div>
-        </li>`).insertBefore($(".last"));
-    $(".app").on("click", ".delete_app", () => {
-      siteList.splice(index, 1);
-      render();
-    });
-  });
+const newSite = (name, logo, url) => {
+  $(`<li class="site">
+  <a href="${url}">
+      <div class="site_icon">${logo}</div>
+  </a>
+  <div class="site_name" title=${name} >${name}</div>
+  <div class="remove_site">
+    <svg class="icon">
+        <use xlink:href="#icon-delete"></use>
+    </svg>
+  </div>
+</li>`).insertBefore($(".last"));
 };
-render();
+const initSites = () => {
+  for (let i = 0; i < siteList.length; i++) {
+    newSite(siteList[i].name, siteList[i].logo, siteList[i].url);
+  }
+};
+setEngine(engine);
+initSites();
 
-const addUrl = () => {
+const addSite = () => {
   let url = window.prompt("请输入网站地址：");
   if (url) {
     if (url.indexOf("http") !== 0) {
       url = "https://" + url;
     }
+    siteName = urlToName(url);
+    siteLogo = siteName[0];
     siteList.push({
-      logo: urlToName(url)[0],
-      name: urlToName(url),
+      logo: siteLogo,
+      name: siteName,
       url: url,
     });
-    render();
+    newSite(siteName, siteLogo, url);
   }
 };
-const keyToSite = (e) => {
+const removeSite = (e) => {
+  console.log();
+  e.stopPropagation();
+  const index = $(e.currentTarget).parent().index();
+  $(e.currentTarget).parent().remove();
+  siteList.splice(index, 1);
+};
+const sitePointer = (e) => {
   for (let i = 0; i < siteList.length; i++) {
     if (siteList[i].logo.toLowerCase() === e.key) {
       window.open(siteList[i].url);
     }
   }
 };
-const search = function (e) {
+const search = (e) => {
   e.preventDefault();
   const inputVal = $(".search_box > input").val();
-  !inputVal || window.open(engines.get(engine) + inputVal);
+  !inputVal || window.open(engineList.get(engine) + inputVal);
+};
+const toggleEngines = function () {
+  $(".card").toggleClass("show");
+};
+const switchEngine = function (e) {
+  e.preventDefault();
+  engine = this.name;
+  localStorage.setItem("engine", engine);
+  const new_src = `https://kehanhan.github.io/newTab/src/images/${engine}.png`;
+  $(".select_btn > img").attr("src", new_src);
+  toggleEngines();
+};
+const enterSearch = (e) => {
+  e.key === "Enter" && $(".search_btn").trigger("click");
 };
 
 window.onpagehide = () => {
   let localList = JSON.stringify(siteList);
   localStorage.setItem("sites", localList);
 };
-
-$(".add").on("click", addUrl);
-
+$(document).on("keypress", sitePointer);
 $(".search_box > input").focus(() => {
-  $(document).off("keypress", keyToSite);
-  $(document).on("keypress", (e) => {
-    if (e.key === "Enter") {
-      $(".search_button").trigger("click");
-    }
-  });
+  $(document).off("keypress", sitePointer);
+  $(document).on("keypress", enterSearch);
 });
-
-$(document).on("keypress", keyToSite);
-
-$(".select_button").click(function (e) {
-  e.preventDefault();
-  $(".card").toggleClass("show");
-});
-
-$(".search_button").click(search);
-$(".switch_btn").click(function (e) {
-  e.preventDefault();
-  engine = this.name;
-  localStorage.setItem("engine", engine);
-  const new_src = `https://kehanhan.github.io/newTab/src/images/${engine}.png`;
-  $(".select_button > img").attr("src", new_src);
-  $(".card").toggleClass("show");
-});
+$(".search_box > input").blur(() => $(document).on("keypress", sitePointer));
+$(".select_btn").click(toggleEngines);
+$(".search_btn").click(search);
+$(".switch_btn").click(switchEngine);
+$(".add_site").on("click", addSite);
+$(".site").on("click", ".remove_site", removeSite);
