@@ -118,7 +118,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"epB2":[function(require,module,exports) {
-var engineList = new Map([["google", "https://google.com/search?q="], ["baidu", "https://www.baidu.com/s?tn=44004473_18_oem_dg&ie=utf-8&wd="], ["mdn", "https://developer.mozilla.org/zh-CN/search?q="]]);
+var engineList = new Map([["google", "https://google.com/search?q="], ["baidu", "https://www.baidu.com/s?wd="], ["mdn", "https://developer.mozilla.org/zh-CN/search?q="], ["github", "https://github.com/search?q="], ["iconfont", "https://www.iconfont.cn/search/index?searchType=icon&q="]]);
 var sites = JSON.parse(localStorage.getItem("sites"));
 var engine = localStorage.getItem("engine") || "google";
 var siteList = sites || [{
@@ -273,4 +273,4 @@ $(".search_btn").click(search);
 $(".switch_btn").click(switchEngine);
 $(".add_site").on("click", addSite);
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.674a8cd2.js.map
+//# sourceMappingURL=main.067cef6a.js.map
