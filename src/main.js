@@ -1,7 +1,9 @@
 const engineList = new Map([
   ["google", "https://google.com/search?q="],
-  ["baidu", "https://www.baidu.com/s?tn=44004473_18_oem_dg&ie=utf-8&wd="],
+  ["baidu", "https://www.baidu.com/s?wd="],
   ["mdn", "https://developer.mozilla.org/zh-CN/search?q="],
+  ["github", "https://github.com/search?q="],
+  ["iconfont", "https://www.iconfont.cn/search/index?searchType=icon&q="],
 ]);
 const sites = JSON.parse(localStorage.getItem("sites"));
 let engine = localStorage.getItem("engine") || "google";
